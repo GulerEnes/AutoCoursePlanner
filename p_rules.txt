@@ -8,7 +8,7 @@
 2- 2 tip sınıf var -> Büyük ve küçük
    Bu sınıfların sayıları önceden belli
 
-3- Her güne en fazla 2 tane ders koyulabiliyor -> Sabah ve akşam dersleri
+3- Her güne en fazla 2 tane ders koyulabiliyor -> Sabah ve öğlen dersleri
    Böylece bir haftada toplam 10 ders olabiliyor max.
  
 4- Hocalar bazı saatlerde müsait olmayabiliyorlar. Bu saatlerde onlara ders koyulamaz.

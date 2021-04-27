@@ -11,6 +11,20 @@ class Course:
         self.instructor = instructor
         self.serviceTimeSlot_day = None
         self.serviceTimeSlot_clock = None
+        Course.numOfCourses += 1
+
+    def __repr__(self):  # I wrote this for temporarily
+        return f"""code: {self.code}
+name: {self.name}
+year: {self.year}
+credit: {self.credit}
+CE: {self.CE}
+DS: {self.DS}
+instructor: {self.instructor}
+serviceTimeSlot_day: {self.serviceTimeSlot_day}
+serviceTimeSlot_clock: {self.serviceTimeSlot_clock}
+-------------------------------------------------
+"""
 
 
 class ServiceCourse:
@@ -20,6 +34,7 @@ class ServiceCourse:
         self.code = code
         self.day = day
         self.clock = clock
+        ServiceCourse.numOfServiceCourses += 1
 
 
 class BusyInstructor:
@@ -27,7 +42,12 @@ class BusyInstructor:
 
     def __init__(self, name):
         self.name = name
-        self.busyTimeSlots = dict()
+        self.busyTimeSlots = []
+        BusyInstructor.numOfBusyInstructor += 1
+
+
+
+
 
     def appendBusyTimeSlot(self, day, clock):
-        self.busyTimeSlots[day] = clock
+        self.busyTimeSlots.append([day, clock])
