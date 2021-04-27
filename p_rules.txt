@@ -1,0 +1,22 @@
+1- Müfredatta bazı dersler var
+	I.  Derslerin saatleri çakışmamalı
+	II. 2 tip ders var -> Seçmeli ve Zorunlu
+	III.Zorunlu dersler büyük sınıflarda olmak zorunda
+	IV. Seçmeli derslerin nerede olduğunun bir önemi yok
+	V.  Bazı dersler başka departmanlarla ortak olduğundan zamanı önceden belli.(Service Courses)
+		
+2- 2 tip sınıf var -> Büyük ve küçük
+   Bu sınıfların sayıları önceden belli
+
+3- Her güne en fazla 2 tane ders koyulabiliyor -> Sabah ve akşam dersleri
+   Böylece bir haftada toplam 10 ders olabiliyor max.
+ 
+4- Hocalar bazı saatlerde müsait olmayabiliyorlar. Bu saatlerde onlara ders koyulamaz.
+
+5- Eğer ortaya bir müfredat çıkarmak mümkün değilse bunu bir hata mesajı ile belirtebiliriz.
+   Böylece hata oluştuğunda sınıf sayısını artırabiliriz.
+
+6- Arayüz tasarımı istediğimiz gibi olabilir.
+
+Dipnot: bize verilen dersler bir yılın 2 dönemine ait olacağından aslında 2 tane müfredat belirliyoruz.
+
