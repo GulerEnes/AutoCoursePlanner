@@ -45,9 +45,5 @@ class BusyInstructor:
         self.busyTimeSlots = []
         BusyInstructor.numOfBusyInstructor += 1
 
-
-
-
-
     def appendBusyTimeSlot(self, day, clock):
         self.busyTimeSlots.append([day, clock])
