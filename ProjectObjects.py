@@ -1,3 +1,19 @@
+class Classroom:
+    numOfClassroom = 0
+    bigClassAmount = 0
+    smallClassAmount = 0
+
+    def __init__(self, type, amount):
+        self.type = type
+        self.amount = amount
+        Classroom.numOfClassroom += int(self.amount)
+
+    def __repr__(self):
+            return f"""type: {self.type}
+amount: {self.amount}
+-------------------------------------------------
+"""
+
 class Course:
     numOfCourses = 0
 
@@ -36,6 +52,13 @@ class ServiceCourse:
         self.clock = clock
         ServiceCourse.numOfServiceCourses += 1
 
+    def __repr__(self):
+            return f"""code: {self.code}
+day: {self.day}
+clock: {self.clock}
+-------------------------------------------------
+"""
+
 
 class BusyInstructor:
     numOfBusyInstructor = 0
@@ -47,3 +70,24 @@ class BusyInstructor:
 
     def appendBusyTimeSlot(self, day, clock):
         self.busyTimeSlots.append([day, clock])
+    def __repr__(self):
+            return f"""name: {self.name}
+BusyTimeSlots: {self.busyTimeSlots}
+-------------------------------------------------
+"""
+
+class Cirriculum:
+
+    def __init__(self,day,clock,classroom,code):
+        self.day = day
+        self.clock = clock
+        self.classroom = classroom
+        self.code = code
+
+    def __repr__(self):
+            return f"""Day: {self.day}
+Clock: {self.clock}
+Classrom: {self.classroom}
+Code: {self.code}            
+-------------------------------------------------
+"""
