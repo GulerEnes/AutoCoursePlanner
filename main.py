@@ -16,6 +16,9 @@ def isNumberOfClassesEnough(bigClasses, smallClasses):
             len(bigClasses) * 10 - Course.numberOfCompulsoryCourses) > Course.numberOfElectiveCourses
 
 
+ccc = 0
+
+
 def findCorrectPlace(classes, courses, service, timesForYears):
     for _class in classes:  # To find correct place
         if _class.className[0] == 'b' and _class.code is None:
@@ -29,60 +32,7 @@ def findCorrectPlace(classes, courses, service, timesForYears):
                 break
 
 
-def putCourses(busyInstructors, courses, timesForYears, flag):
-    Ccount = 0
-    while len(courses.keys()) > 0 and Ccount < len(courses.keys()) * 20:
-        Ccount += 1
-        randomCourse = random.choice(list(courses.values()))
-        count = 0
-        while count < len(classes) * 20:
-            randomClassroom = random.choice(classes)
-            # Zorunlu ders, büyük sınıf ve bahsi geçen sınıfın o sırada boş olma durumu kontroü
-            if (flag == 'E' and randomClassroom.code is None) or (
-                    flag == 'C' and randomCourse.CE == 'C' and randomClassroom.className[0] == 'b'):
-                # Aynı yıla ait olan derslerin aynı satırda olmaması için zaman kontrolü
-
-                if randomClassroom.day in timesForYears[randomCourse.year - 1].keys() and randomClassroom.clock in \
-                        timesForYears[randomCourse.year - 1][randomClassroom.day]:
-
-                    # Hocanın müsaitlik kontrolü
-                    if randomCourse.instructor in busyInstructors.keys():
-                        availableTimes = busyInstructors[randomCourse.instructor].availableTimeSlots
-                        if randomClassroom.day in availableTimes.keys() and randomClassroom.clock in availableTimes[
-                            randomClassroom.day]:
-                            # Put the fuckin course here
-
-                            randomClassroom.code = randomCourse.code
-                            # Deleting time line from timesForYears
-                            timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
-                            if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
-                                timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
-                            courses.pop(randomCourse.code)  # Deleting course from courses
-                            break
-
-                    else:  # Hoca her zaman müsait
-                        randomClassroom.code = randomCourse.code
-                        # Deleting time line from timesForYears
-                        timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
-                        if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
-                            timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
-                        courses.pop(randomCourse.code)  # Deleting course from courses
-                        break
-            count += 1
-
-
-maxTableTryNumber = 0
-
-
-def changingClassNumbers(oldBig, oldSmall):
-    with open('classroom.csv', 'w') as file:
-        writer = csv.writer(file)
-        writer.writerow('Big;' + str(oldBig + 1))
-        writer.writerow('Small;' + str(oldSmall + 1))
-
-
-while maxTableTryNumber < 1000:
-    maxTableTryNumber += 1
+while ccc < 1000:
     # Hocacıklarımızın müsait olmadıkları zamanlar
     busyInstructors = dict()
     with open("busy.csv", mode='r') as busyFile:
@@ -122,7 +72,6 @@ while maxTableTryNumber < 1000:
 
     timesForYears = [timeGenerator(), timeGenerator(), timeGenerator(), timeGenerator()]
 
-    # Service derslerinin yerleştirilmesi
     for service in services:
         if courses[service.code].CE == 'C':  # Compulsory Service Course
             findCorrectPlace(classes, courses, service, timesForYears)
@@ -136,20 +85,117 @@ while maxTableTryNumber < 1000:
         busyInstructor.availableTimesCalculator(busyInstructors)
 
     if isNumberOfClassesEnough(bigClasses, smallClasses):
-        putCourses(busyInstructors, courses, timesForYears, 'C')
-        putCourses(busyInstructors, courses, timesForYears, 'E')
 
+        Ccount = 0
+        while len(courses.keys()) > 0 and Ccount < len(courses.keys()) * 20:
+            Ccount += 1
+            randomCourse = random.choice(list(courses.values()))
+            count = 0
+            while count < len(classes) * 20:
+                randomClassroom = random.choice(classes)
+                # Zorunlu ders, büyük sınıf ve bahsi geçen sınıfın o sırada boş olma durumu kontroü
+                if randomClassroom.code is None and randomCourse.CE == 'C' and randomClassroom.className[0] == 'b':
+                    # Aynı yıla ait olan derslerin aynı satırda olmaması için zaman kontrolü
+
+                    if randomClassroom.day in timesForYears[randomCourse.year - 1].keys() and randomClassroom.clock in \
+                            timesForYears[randomCourse.year - 1][randomClassroom.day]:
+
+                        # Hocanın müsaitlik kontrolü
+                        if randomCourse.instructor in busyInstructors.keys():
+                            availableTimes = busyInstructors[randomCourse.instructor].availableTimeSlots
+                            if randomClassroom.day in availableTimes.keys() and randomClassroom.clock in availableTimes[
+                                randomClassroom.day]:
+                                # Put the fuckin course here
+
+                                randomClassroom.code = randomCourse.code
+                                # Deleting time line from timesForYears
+                                timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
+                                if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
+                                    timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
+                                courses.pop(randomCourse.code)  # Deleting course from courses
+                                break
+
+                        else:  # Hoca her zaman müsait
+                            randomClassroom.code = randomCourse.code
+                            # Deleting time line from timesForYears
+                            timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
+                            if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
+                                timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
+                            courses.pop(randomCourse.code)  # Deleting course from courses
+                            break
+                count += 1
+
+        Ccount = 0
+        while len(courses.keys()) > 0 and Ccount < len(courses.keys()) * 100:
+            Ccount += 1
+            randomCourse = random.choice(list(courses.values()))
+            count = 0
+            while count < len(classes) * 100:
+
+                randomClassroom = random.choice(classes)
+                # Sınıf o saatte ve günde boş mu kontrolü
+                if randomClassroom.code is None:
+                    # Aynı yıla ait olan derslerin aynı satırda olmaması için zaman kontrolü
+
+                    # Friday Morning smallClass_1 None CENG465,INTERNET OF THINGS AND ITS APPLICATIONS,4,5,E,D,PROF.DR. REMZI YILDIRIM
+
+                    if randomClassroom.day in timesForYears[randomCourse.year - 1].keys() and randomClassroom.clock in \
+                            timesForYears[randomCourse.year - 1][randomClassroom.day]:
+
+                        # Hocanın müsaitlik kontrolü
+                        if randomCourse.instructor in busyInstructors.keys():
+                            availableTimes = busyInstructors[randomCourse.instructor].availableTimeSlots
+
+                            if randomClassroom.day in availableTimes.keys() and randomClassroom.clock in availableTimes[
+                                randomClassroom.day]:
+
+                                # Put the fuckin course here
+                                randomClassroom.code = randomCourse.code
+                                courses.pop(randomCourse.code)  # Deleting course from courses
+                                # Deleting time line from timesForYears
+                                timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
+                                if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
+                                    timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
+                                break
+                        else:  # Hoca her zaman müsait
+
+                            randomClassroom.code = randomCourse.code
+                            courses.pop(randomCourse.code)  # Deleting course from courses
+                            # Deleting time line from timesForYears
+                            timesForYears[randomCourse.year - 1][randomClassroom.day].remove(randomClassroom.clock)
+                            if 0 == len(timesForYears[randomCourse.year - 1][randomClassroom.day]):
+                                timesForYears[randomCourse.year - 1].pop(randomClassroom.day)
+                            break
+                count += 1
 
     else:  # Sınıf sayısı yetmiyor
         # Sınıfsayısını artır ve bütün dosyayı en baştan çalıştır.
+        # print("ALLLAAAAAH")
         Course.numberOfCompulsoryCourses = 0
         Course.numberOfElectiveCourses = 0
-        if maxTableTryNumber == 999:
-            maxTableTryNumber = 0
-            changingClassNumbers(numOfClasses["big"], numOfClasses["small"])
+        if ccc == 999:
+            ccc = 0
+            oldBig = numOfClasses["big"]
+            oldSmall = numOfClasses["small"]
+            with open('classroom.csv', 'w') as file:
+                writer = csv.writer(file)
+                writer.writerow('Big;' + str(oldBig + 1))
+                writer.writerow('Small;' + str(oldSmall + 1))
 
     if len(courses.keys()) == 0:
         break
 
+for i in classes:
+    if i.code is None:
+        i.code = "--------"
 
-[print(i) for i in classes]
+[print(i) for i in classes if i.day == "Monday" and i.clock == "Morning"]
+[print(i) for i in classes if i.day == "Monday" and i.clock == "Afternoon"]
+[print(i) for i in classes if i.day == "Tuesday" and i.clock == "Morning"]
+[print(i) for i in classes if i.day == "Tuesday" and i.clock == "Afternoon"]
+[print(i) for i in classes if i.day == "Wednesday" and i.clock == "Morning"]
+[print(i) for i in classes if i.day == "Wednesday" and i.clock == "Afternoon"]
+[print(i) for i in classes if i.day == "Thursday" and i.clock == "Morning"]
+[print(i) for i in classes if i.day == "Thursday" and i.clock == "Afternoon"]
+[print(i) for i in classes if i.day == "Friday" and i.clock == "Morning"]
+[print(i) for i in classes if i.day == "Friday" and i.clock == "Afternoon"]
