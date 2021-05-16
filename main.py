@@ -16,7 +16,7 @@ def isNumberOfClassesEnough(bigClasses, smallClasses):
             len(bigClasses) * 10 - Course.numberOfCompulsoryCourses) > Course.numberOfElectiveCourses
 
 
-ccc = 0
+
 
 
 def findCorrectPlace(classes, courses, service, timesForYears):
@@ -31,8 +31,9 @@ def findCorrectPlace(classes, courses, service, timesForYears):
                 courses.pop(service.code)
                 break
 
-
-while ccc < 1000:
+maxTableIteration = 0
+while maxTableIteration < 1000:
+    maxTableIteration += 1
     # Hocacıklarımızın müsait olmadıkları zamanlar
     busyInstructors = dict()
     with open("busy.csv", mode='r') as busyFile:
@@ -173,8 +174,8 @@ while ccc < 1000:
         # print("ALLLAAAAAH")
         Course.numberOfCompulsoryCourses = 0
         Course.numberOfElectiveCourses = 0
-        if ccc == 999:
-            ccc = 0
+        if maxTableIteration == 999:
+            maxTableIteration = 0
             oldBig = numOfClasses["big"]
             oldSmall = numOfClasses["small"]
             with open('classroom.csv', 'w') as file:
@@ -199,3 +200,5 @@ for i in classes:
 [print(i) for i in classes if i.day == "Thursday" and i.clock == "Afternoon"]
 [print(i) for i in classes if i.day == "Friday" and i.clock == "Morning"]
 [print(i) for i in classes if i.day == "Friday" and i.clock == "Afternoon"]
+
+print("Iteration", maxTableIteration)
