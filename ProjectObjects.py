@@ -57,4 +57,3 @@ class BusyInstructor:
             self.availableTimeSlots[day].remove(clock)
             if len(self.availableTimeSlots[day]) == 0:
                 self.availableTimeSlots.pop(day)
-

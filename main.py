@@ -1,5 +1,5 @@
 import csv
-from Objects import *
+from ProjectObjects import *
 import random
 
 
@@ -153,4 +153,3 @@ while maxTableTryNumber < 1000:
 
 
 [print(i) for i in classes]
-
