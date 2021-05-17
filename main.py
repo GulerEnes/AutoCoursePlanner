@@ -84,7 +84,6 @@ while maxTableIteration < 1000:
         busyInstructor.availableTimesCalculator(busyInstructors)
 
     if isNumberOfClassesEnough(bigClasses, smallClasses):
-
         Ccount = 0
         while len(courses.keys()) > 0 and Ccount < len(courses.keys()) * 20:
             Ccount += 1
