@@ -18,10 +18,7 @@ def isNumberOfClassesEnough(bigClasses, smallClasses):
             len(bigClasses) * 10 - Course.numberOfCompulsoryCourses) >= Course.numberOfElectiveCourses
 
 
-
-
-
-
+# Placing service lessons for mandatory place.
 def findCorrectPlace(classes, courses, service, timesForYears):
     for _class in classes:  # To find correct place
         if _class.className[0] == 'b' and _class.code is None:
@@ -80,7 +77,8 @@ while maxTableIteration < 1000:
             if isInputOkay(row, 3):
                 services.append(ServiceCourse(row[0], row[1], row[2]))
 
-    classes = [Classroom(className, day, clock, None) for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    classes = [Classroom(className, day, clock, None) for day in
+               ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
                for clock in ["Morning", "Afternoon"] for className in bigClasses + smallClasses]
     timesForYears = [timeGenerator(), timeGenerator(), timeGenerator(), timeGenerator()]
 
@@ -191,10 +189,10 @@ while maxTableIteration < 1000:
             maxTableIteration = 0
             oldBig = numOfClasses["big"]
             oldSmall = numOfClasses["small"]
-            with open('classroom.csv', 'w') as file:
-                writer = csv.writer(file)
-                writer.writerow('Big;' + str(oldBig + 1))
-                writer.writerow('Small;' + str(oldSmall + 1))
+            with open('classroom.csv', 'w', newline='') as file:
+                writer = csv.writer(file, delimiter=';')
+                writer.writerow(['big', str(oldBig + 1)])
+                writer.writerow(['small', str(oldSmall + 1)])
 
     if len(courses.keys()) == 0:
         break
@@ -204,4 +202,4 @@ for i in classes:
         i.code = "--------"
 
 [print(i) for i in classes]
-print("Iteration", maxTableIteration)
+# print("Iteration", maxTableIteration)

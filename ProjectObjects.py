@@ -16,10 +16,6 @@ class Course:
         else:
             Course.numberOfElectiveCourses += 1
 
-    def __repr__(self):
-        return self.code + "," + self.name + "," + str(self.year) + "," + \
-               str(self.credit) + "," + self.CE + "," + self.DS + "," + self.instructor
-
 
 class ServiceCourse:
     def __init__(self, code, day, clock):
