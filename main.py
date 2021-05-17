@@ -105,7 +105,7 @@ while maxTableIteration < 1000:
             count = 0
             while count < len(classes) * 20:
                 randomClassroom = random.choice(classes)
-                # Zorunlu ders, büyük sınıf ve bahsi geçen sınıfın o sırada boş olma durumu kontroü
+                # Mandatory lesson must be in "big" classrooms. Also the classrom has to be available for setting lesson.
                 if randomClassroom.code is None and randomCourse.CE == 'C' and randomClassroom.className[0] == 'b':
                     # The lessons of the  same year cannot be in same block.
 
