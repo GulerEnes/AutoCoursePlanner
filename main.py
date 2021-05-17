@@ -67,10 +67,6 @@ while maxTableIteration < 1000:
         for row in csvReader:
             services.append(ServiceCourse(row[0], row[1], row[2]))
 
-    # classes = [Classroom(className, day, clock, None) for className in bigClasses + smallClasses
-    #            for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] for clock in
-    #            ["Morning", "Afternoon"]]
-
     classes = [Classroom(className, day, clock, None) for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
                for clock in ["Morning", "Afternoon"] for className in bigClasses + smallClasses]
     timesForYears = [timeGenerator(), timeGenerator(), timeGenerator(), timeGenerator()]
