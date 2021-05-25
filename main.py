@@ -1,6 +1,6 @@
 """
 
-Group Members:
+group Members:
 1. EFŞAN ALBAYRAK - 19050151005
 2. ÖZGE VARLIOĞLU - 18050111004
 3. MELİS ALPKAYA - 18050111042
@@ -9,18 +9,9 @@ Group Members:
 6 .YAKUP BATUHAN ÖRDEK – 18050111041
 
 """
-import csv
+
 from ProjectObjects import *
-import random
 
-
-# Creating available place holder for classrooms.
-def timeGenerator():
-    return {"Monday": ["Morning", "Afternoon"],
-            "Tuesday": ["Morning", "Afternoon"],
-            "Wednesday": ["Morning", "Afternoon"],
-            "Thursday": ["Morning", "Afternoon"],
-            "Friday": ["Morning", "Afternoon"]}
 
 
 # Checking classroom numbers and avalible class relations. If you got 30 slots for lessons and you got less than 30 it'll be work.
