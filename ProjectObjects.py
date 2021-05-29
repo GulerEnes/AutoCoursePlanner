@@ -1,8 +1,35 @@
 import csv
 import random
-
+from tkinter import *
+from tkinter import filedialog
 
 class Main:
+
+    def openFile(self):
+        global filepath
+        global filepath1
+        global filepath2
+        global filepath3
+        filepath = filedialog.askopenfilename(initialdir="/", title="Please Select a busy File",
+                                              filetypes=(("Excel files",
+                                                          "*.csv*"),
+                                                         ("all files",
+                                                          "*.*")))
+        filepath1 = filedialog.askopenfilename(initialdir="/", title="Please Select a classroom File",
+                                              filetypes=(("Excel files",
+                                                          "*.csv*"),
+                                                         ("all files",
+                                                          "*.*")))
+        filepath2 = filedialog.askopenfilename(initialdir="/", title="Please Select a Courses File",
+                                              filetypes=(("Excel files",
+                                                          "*.csv*"),
+                                                         ("all files",
+                                                          "*.*")))
+        filepath3 = filedialog.askopenfilename(initialdir="/", title="Please Select a service File",
+                                              filetypes=(("Excel files",
+                                                          "*.csv*"),
+                                                         ("all files",
+                                                          "*.*")))
 
     # Creating available place holder for classrooms.
     def timeGenerator(self):
@@ -35,12 +62,30 @@ class Main:
         return len(row) == parameterCount
 
     def main(self):
+        window = Tk()
+        window.title("FileChooser")
+        window.minsize(620, 300)
+        window.maxsize(620, 300)
+        window.geometry('620x300+450+200')
+        window.configure(bg='#f0fff0')
+        infolabel1 = Label(window,
+                           text="\n\n\n\nPlease choose the specified files in order\n (busy.csv/classroom.csv/Courses.csv/services.csv)\n\n\n",
+                           bg="#f0fff0", fg="black", font="Verdana 10 bold")
+        infolabel1.pack()
+        infolabel2 = Label(window, text="Please close the window after choosing files\n\n\n ", bg="#f0fff0", fg="black",
+                           font="Verdana 10 italic bold")
+        infolabel2.pack()
+        button = Button(text='Browse', fg='white', bg='#1c0f45', font="Verdana 10 bold", command=self.openFile, )
+        button.pack()
+        window.mainloop()
+        window2 = Tk()
+
         maxTableIteration = 0
         while maxTableIteration < 1000:
             maxTableIteration += 1
             # Arranging  available times of lecturers.
             busyInstructors = dict()
-            with open("busy.csv", mode='r') as busyFile:
+            with open(filepath, mode='r') as busyFile:
                 csvReader = csv.reader(busyFile, delimiter=';')
                 for row in csvReader:
                     if self.isInputOkay(row, 3):
@@ -50,7 +95,7 @@ class Main:
 
             # Reading number of classes and creating name of classes.
             numOfClasses = dict()
-            with open("classroom.csv", mode='r') as classroomFile:
+            with open(filepath1, mode='r') as classroomFile:
                 csvReader = csv.reader(classroomFile, delimiter=';')
                 for row in csvReader:
                     if (self.isInputOkay(row, 2)):
@@ -61,7 +106,7 @@ class Main:
 
             # Read the classes and put all of them into a list.
             courses = dict()
-            with open("Courses.csv", mode='r') as coursesFile:
+            with open(filepath2, mode='r') as coursesFile:
                 csvReader = csv.reader(coursesFile, delimiter=';')
                 for row in csvReader:
                     if (self.isInputOkay(row, 7)):
@@ -69,7 +114,7 @@ class Main:
 
             # Reading service lessons.
             services = []
-            with open("service.csv", mode='r') as serviceFile:
+            with open(filepath3, mode='r') as serviceFile:
                 csvReader = csv.reader(serviceFile, delimiter=';')
                 for row in csvReader:
                     if self.isInputOkay(row, 3):
@@ -192,10 +237,14 @@ class Main:
                 if maxTableIteration == 999:
                     print("There is no enough classroom, unfortunately. " +
                           "Number of the classroom will be increased and program will start from scratch")
+                    errorlabel = Label(window2, text="\nThere is no enough classroom, unfortunately.\n " +
+                                                     "Number of the classroom will be increased and program will start from scratch",
+                                       bg='#f0fff0', fg="#1c0f45", font="Verdana 8 italic")
+                    errorlabel.pack()
                     maxTableIteration = 0
                     oldBig = numOfClasses["big"]
                     oldSmall = numOfClasses["small"]
-                    with open('classroom.csv', 'w', newline='') as file:
+                    with open(filepath1, 'w', newline='') as file:
                         writer = csv.writer(file, delimiter=';')
                         writer.writerow(['big', str(oldBig + 1)])
                         writer.writerow(['small', str(oldSmall + 1)])
@@ -203,11 +252,28 @@ class Main:
             if len(courses.keys()) == 0:
                 break
 
+        window2.title("\nSyllabus")
+        window2.geometry('600x780+500+0')
+        window2.configure(bg="#f0fff0")
+        win2infolabel = Label(text="Syllabus", bg="#f0fff0", fg="#1c0f45", font="Verdana 12 bold")
+        win2infolabel.pack()
+        win2infolabel2 = Label(text="---------------\n", bg="#f0fff0", fg="#1c0f45")
+        win2infolabel2.pack()
+
         for i in classes:
             if i.code is None:
                 i.code = "--------"
 
-        [print(i) for i in classes]
+        i = 0
+        for i in range(len(classes)):
+            temp = classes[i]
+            label = Label(window2, bg='#f0fff0', fg="#1c0f45", text=temp, font="Verdana 10 bold")
+            label.pack()
+        window2.mainloop()
+
+
+
+        #[print(i) for i in classes]
         # print("Iteration", maxTableIteration)
 
 
