@@ -1,35 +1,23 @@
+"""
+
+group Members:
+1. EFŞAN ALBAYRAK - 19050151005
+2. ÖZGE VARLIOĞLU - 18050111004
+3. MELİS ALPKAYA - 18050111042
+4. HALİT BURAK YEŞİLDAL - 18050111043
+5. ENES GÜLER - 18050111005
+6 .YAKUP BATUHAN ÖRDEK – 18050111041
+
+"""
+
+
 import csv
 import random
-from tkinter import *
-from tkinter import filedialog
+from Features import *
 
+
+x = True
 class Main:
-
-    def openFile(self):
-        global filepath
-        global filepath1
-        global filepath2
-        global filepath3
-        filepath = filedialog.askopenfilename(initialdir="/", title="Please Select a busy File",
-                                              filetypes=(("Excel files",
-                                                          "*.csv*"),
-                                                         ("all files",
-                                                          "*.*")))
-        filepath1 = filedialog.askopenfilename(initialdir="/", title="Please Select a classroom File",
-                                              filetypes=(("Excel files",
-                                                          "*.csv*"),
-                                                         ("all files",
-                                                          "*.*")))
-        filepath2 = filedialog.askopenfilename(initialdir="/", title="Please Select a Courses File",
-                                              filetypes=(("Excel files",
-                                                          "*.csv*"),
-                                                         ("all files",
-                                                          "*.*")))
-        filepath3 = filedialog.askopenfilename(initialdir="/", title="Please Select a service File",
-                                              filetypes=(("Excel files",
-                                                          "*.csv*"),
-                                                         ("all files",
-                                                          "*.*")))
 
     # Creating available place holder for classrooms.
     def timeGenerator(self):
@@ -61,64 +49,60 @@ class Main:
     def isInputOkay(self, row, parameterCount):
         return len(row) == parameterCount
 
-    def main(self):
-        window = Tk()
-        window.title("FileChooser")
-        window.minsize(620, 300)
-        window.maxsize(620, 300)
-        window.geometry('620x300+450+200')
-        window.configure(bg='#f0fff0')
-        infolabel1 = Label(window,
-                           text="\n\n\n\nPlease choose the specified files in order\n (busy.csv/classroom.csv/Courses.csv/services.csv)\n\n\n",
-                           bg="#f0fff0", fg="black", font="Verdana 10 bold")
-        infolabel1.pack()
-        infolabel2 = Label(window, text="Please close the window after choosing files\n\n\n ", bg="#f0fff0", fg="black",
-                           font="Verdana 10 italic bold")
-        infolabel2.pack()
-        button = Button(text='Browse', fg='white', bg='#1c0f45', font="Verdana 10 bold", command=self.openFile, )
-        button.pack()
-        window.mainloop()
-        window2 = Tk()
+    def main(self, busyPath, classroomPath, coursesPath, servicePath, outputPath, options, values=[], isManuel=False):
 
         maxTableIteration = 0
         while maxTableIteration < 1000:
+            busyInstructors = dict()
+            numOfClasses = dict()
+            courses = dict()
+            services = []
+
+            if len(values) > 0:
+                busyInstructors = values[0]
+                numOfClasses = values[1]
+                courses = values[2]
+                services = values[3]
+
             maxTableIteration += 1
             # Arranging  available times of lecturers.
-            busyInstructors = dict()
-            with open(filepath, mode='r') as busyFile:
-                csvReader = csv.reader(busyFile, delimiter=';')
-                for row in csvReader:
-                    if self.isInputOkay(row, 3):
-                        if row[0] not in busyInstructors:
-                            busyInstructors[row[0]] = BusyInstructor(row[0])
-                        busyInstructors[row[0]].appendBusyTimeSlot(row[1], row[2])
 
-            # Reading number of classes and creating name of classes.
-            numOfClasses = dict()
-            with open(filepath1, mode='r') as classroomFile:
-                csvReader = csv.reader(classroomFile, delimiter=';')
-                for row in csvReader:
-                    if (self.isInputOkay(row, 2)):
-                        numOfClasses[row[0]] = int(row[1])
+            if not isManuel:
+
+                with open(busyPath, mode='r') as busyFile:
+                    csvReader = csv.reader(busyFile, delimiter=';')
+                    for row in csvReader:
+                        if self.isInputOkay(row, 3):
+                            if row[0] not in busyInstructors:
+                                busyInstructors[row[0]] = BusyInstructor(row[0])
+                            busyInstructors[row[0]].appendBusyTimeSlot(row[1], row[2])
+
+                # Reading number of classes and creating name of classes.
+
+                with open(classroomPath, mode='r') as classroomFile:
+                    csvReader = csv.reader(classroomFile, delimiter=';')
+                    for row in csvReader:
+                        if (self.isInputOkay(row, 2)):
+                            numOfClasses[row[0]] = int(row[1])
+
+                # Read the classes and put all of them into a list.
+
+                with open(coursesPath, mode='r') as coursesFile:
+                    csvReader = csv.reader(coursesFile, delimiter=';')
+                    for row in csvReader:
+                        if (self.isInputOkay(row, 7)):
+                            courses[row[0]] = Course(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+
+                # Reading service lessons.
+
+                with open(servicePath, mode='r') as serviceFile:
+                    csvReader = csv.reader(serviceFile, delimiter=';')
+                    for row in csvReader:
+                        if self.isInputOkay(row, 3):
+                            services.append(ServiceCourse(row[0], row[1], row[2]))
 
             bigClasses = ["bigClass_" + str(i + 1) for i in range(numOfClasses["big"])]
             smallClasses = ["smallClass_" + str(i + 1) for i in range(numOfClasses["small"])]
-
-            # Read the classes and put all of them into a list.
-            courses = dict()
-            with open(filepath2, mode='r') as coursesFile:
-                csvReader = csv.reader(coursesFile, delimiter=';')
-                for row in csvReader:
-                    if (self.isInputOkay(row, 7)):
-                        courses[row[0]] = Course(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
-
-            # Reading service lessons.
-            services = []
-            with open(filepath3, mode='r') as serviceFile:
-                csvReader = csv.reader(serviceFile, delimiter=';')
-                for row in csvReader:
-                    if self.isInputOkay(row, 3):
-                        services.append(ServiceCourse(row[0], row[1], row[2]))
 
             classes = [Classroom(className, day, clock, None) for day in
                        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
@@ -229,7 +213,7 @@ class Main:
                                     break
                         count += 1
 
-            else:  # Don't have enough classrom
+            else:  # Don't have enough classroom
                 # Increase the number of classrooms and start the program from scratch.
 
                 Course.numberOfCompulsoryCourses = 0
@@ -237,14 +221,10 @@ class Main:
                 if maxTableIteration == 999:
                     print("There is no enough classroom, unfortunately. " +
                           "Number of the classroom will be increased and program will start from scratch")
-                    errorlabel = Label(window2, text="\nThere is no enough classroom, unfortunately.\n " +
-                                                     "Number of the classroom will be increased and program will start from scratch",
-                                       bg='#f0fff0', fg="#1c0f45", font="Verdana 8 italic")
-                    errorlabel.pack()
                     maxTableIteration = 0
                     oldBig = numOfClasses["big"]
                     oldSmall = numOfClasses["small"]
-                    with open(filepath1, 'w', newline='') as file:
+                    with open('classroom.csv', 'w', newline='') as file:
                         writer = csv.writer(file, delimiter=';')
                         writer.writerow(['big', str(oldBig + 1)])
                         writer.writerow(['small', str(oldSmall + 1)])
@@ -252,37 +232,42 @@ class Main:
             if len(courses.keys()) == 0:
                 break
 
-        window2.title("\nSyllabus")
-        window2.geometry('600x780+500+0')
-        window2.configure(bg="#f0fff0")
-        win2infolabel = Label(text="Syllabus", bg="#f0fff0", fg="#1c0f45", font="Verdana 12 bold")
-        win2infolabel.pack()
-        win2infolabel2 = Label(text="---------------\n", bg="#f0fff0", fg="#1c0f45")
-        win2infolabel2.pack()
-
         for i in classes:
             if i.code is None:
                 i.code = "--------"
 
-        i = 0
-        for i in range(len(classes)):
-            temp = classes[i]
-            label = Label(window2, bg='#f0fff0', fg="#1c0f45", text=temp, font="Verdana 10 bold")
-            label.pack()
-        window2.mainloop()
+        # Word
+        if options[1] == '1':
+            createWord(classes, outputPath)
 
+        # Pdf
+        if options[0] == '1':
+            if options[1] != '1':
+                createWord(classes, outputPath)
+            convertToPdf(outputPath + "/AutoCoursePlanner.docx", outputPath + "/AutoCoursePlanner.pdf")
 
+            if options[1] != '1':
+                os.remove(outputPath + "/AutoCoursePlanner.docx")
 
-        #[print(i) for i in classes]
+        # Excel
+        if options[2] == '1':
+            createExcell(classes, outputPath)
+
+        # Csv
+        if options[3] == '1':
+            createCSV(classes, outputPath)
+
+        # Show in another window
+        if options[4] == '1':
+            return classes
+
+        # [print(i) for i in classes]
         # print("Iteration", maxTableIteration)
-
-
 
 
 class Course:
     numberOfCompulsoryCourses = 0
     numberOfElectiveCourses = 0
-
 
     def __init__(self, code, name, year, credit, CE, DS, instructor):
         self.code = code
@@ -339,4 +324,3 @@ class BusyInstructor:
             self.availableTimeSlots[day].remove(clock)
             if len(self.availableTimeSlots[day]) == 0:
                 self.availableTimeSlots.pop(day)
-
